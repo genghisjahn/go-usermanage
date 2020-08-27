@@ -18,6 +18,8 @@ So I'm going to write my own because:
 
 1. Accept an email address and a password to create an account
     1. It will write those values to a database 
+        1.  The password will be stored using the bcrypt hash
+        1. For V1 the password must be at least 8 bytes long
     1. It will add the bool columns `verified`  and `inactive`
         1. Verified will to make sure that the email address is valid (the user clicks a link)
         1. Inactive will be for accounts that are disabled for whatever reason
