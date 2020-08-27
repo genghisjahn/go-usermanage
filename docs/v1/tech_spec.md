@@ -24,3 +24,32 @@ Fucntions Implemented:
         1. `password` is the password to verify the user, value is also supplied by the user
     2. Return Values
         1. `error` is an error like the one used in the `createUser` function above.  `client` for various validation errors (around email address or a password that doesn't meet requirements) and `server` for problems talking to the database.
+
+```go
+
+const ErrorTypeClient = 4
+const ErrorTypeServer = 5
+
+type ServiceError struct{
+    Message string
+    ErrorType int
+}
+
+func NewServiceError(errortype int, message string) ServiceError{
+    if errortype != 4 || errortype!=5 {
+        panic("Invalid Error Type " & m.ErrorType)
+    }
+    return ServiceError{Message: message, ErrorType: errortype}
+}
+
+func (m ServiceError) Error() string {
+    if m.ErrorType == 4{
+        return "Client Error: " & m.Message
+    }
+    if m.ErrorType == 5{
+        return "Server Error: " & m.Message
+    }
+    panic("Invalid Error Type " & m.ErrorType)
+}
+
+```
