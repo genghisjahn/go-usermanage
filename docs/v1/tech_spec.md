@@ -17,13 +17,13 @@ Fucntions Implemented:
     1. Parameters
         1. `confirmationGUID` string is the GUID that was returned by the `createUser` function above
     1. Return values
-        1. A `ServiceError`. `4`(client) errors will be returned if the GUID does not exist or has already been verified.  `5`(server) errors will be returned if something went wrong with communicating with the data layers. `nil` means that the account was verified successfully.
+        1. A [ServiceError](#ServiceError). `4`(client) errors will be returned if the GUID does not exist or has already been verified.  `5`(server) errors will be returned if something went wrong with communicating with the data layers. `nil` means that the account was verified successfully.
 1. `func loginUser(email, string, password []byte) error`
     1. Parameters
         1. `email` is the email address supplised by the user
         1. `password` is the password to verify the user, value is also supplied by the user
     2. Return Values
-        1. `error` is a ServiceError. `4`(client) for various validation errors (around email address or a password that doesn't meet requirements) and `5`(server) for problems talking to the database.
+        1. `error` is a [ServiceError](#ServiceError). `4`(client) for various validation errors (around email address or a password that doesn't meet requirements) and `5`(server) for problems talking to the database.
 
 
 ### ServiceError
