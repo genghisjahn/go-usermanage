@@ -29,3 +29,8 @@ So I'm going to write my own because:
     1. It is up to the calling application to handle the sending of the email to the user containing the GUID
 1. Verify: Accept a verification GUID verify that they exist and if they do, update the verified value in the users record
 1. Login: Accept an email address and password as login arguments, and then  check to see if the email address and password are valid. The email should be checked for the proper format (singlechar @ singlechar) first.  If valid the function should return nil, if invalid return an error
+
+#### Design Considerations
+
+1. Configuration requirements around data validation should be kept in a json file that is read on start up.
+1. Details of the above functions should be handled via interfaces.  The implementation should of each interface should be self contained.

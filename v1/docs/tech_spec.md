@@ -2,7 +2,18 @@
 
 This document is subordinate to the prose_spec document in this directory.
 
-Fucntions Implemented:
+* Types
+    * Engine
+    * UserManageMemory
+* Interfaces
+    * UserManager
+* Configuration Values
+    * Password requirements regex
+    * UserName requirements regex
+    * Bcrypt Cost
+
+
+Fucntions Implemented on UserManager:
 
 1. `func CreateUser(email, string, password []byte)(string,error)`
     1. Parameters
