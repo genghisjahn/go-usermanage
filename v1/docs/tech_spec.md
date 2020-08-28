@@ -27,6 +27,7 @@ Fucntions Implemented:
 
 
 ### ServiceError
+_The following is not syntactically correct_
 ```go
 
 const ErrorTypeClient = 4
