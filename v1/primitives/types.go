@@ -1,4 +1,4 @@
-package usermanage
+package primitives
 
 const errorTypeClient = 4
 const errorTypeServer = 5
@@ -27,12 +27,4 @@ func (m ServiceError) Error() string {
 	panic("Invalid Error Type " + string(m.ErrorType))
 }
 
-//Engine is the struct that holds all of the parts of the functions, properties, configuration and interface implemntations that interact with the data store.
-type Engine struct {
-}
 
-type Config struct {
-	EmailRegEx    string
-	PasswordRegEx string
-	BycryptCost   int
-}

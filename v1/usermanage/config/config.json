@@ -1,0 +1,5 @@
+{
+    "email_regex":"[!-?a-~]+[@][!-?a-~]+[.][!-?a-~]+",
+    "password_regex":"[ -~]{8,}$",
+    "bcrypt_cost":12
+}
