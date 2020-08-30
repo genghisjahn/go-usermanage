@@ -1,6 +1,7 @@
 package ummock
 
 import (
+	"github.com/genghisjahn/go-usermanage/v1/engine"
 	"github.com/genghisjahn/go-usermanage/v1/primitives"
 )
 
@@ -10,7 +11,7 @@ type UMMock struct {
 }
 
 //NewUserManager returns an instance of a struct that fufills the usermanager interface
-func NewUserManager() UMMock {
+func NewUserManager(c engine.EmailPWConfig) UMMock {
 	return UMMock{}
 }
 

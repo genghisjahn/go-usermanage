@@ -11,22 +11,22 @@ import (
 
 func main() {
 	path := "config/config.json"
-	defaultConfig := engine.Config{BcryptCost: 12, EmailRegEx: "[!-?a-~]+[@][!-?a-~]+[.][!-?a-~]+", PasswordRegEx: "[ -~]{8,}$"}
+	defaultConfig := engine.EmailPWConfig{BcryptCost: 12, EmailRegEx: "[!-?a-~]+[@][!-?a-~]+[.][!-?a-~]+", PasswordRegEx: "[ -~]{8,}$"}
 	dat, err := ioutil.ReadFile(path)
-	c := engine.Config{}
+	epwc := engine.EmailPWConfig{}
 	if err != nil {
-		log.Printf("Config file not found %v\nDefaults Used: %#v", path, c)
+		log.Printf("Config file not found %v\nDefaults Used: %#v", path, epwc)
 	}
-	err = json.Unmarshal(dat, &c)
+	err = json.Unmarshal(dat, &epwc)
 	if err != nil {
-		c = defaultConfig
+		epwc = defaultConfig
 	}
 
-	um := ummock.NewUserManager()
-	eng, engErr := engine.NewEngine(c, um)
+	um := ummock.UMMock{}
+	eng, engErr := engine.NewEngine(um)
 	if engErr != nil {
 		log.Fatal(engErr)
 	}
 	_ = eng
-	eng.UserManager.CreateUser("hello", []byte("temp"))
+	//TODO we need to inject the config for the validation URLs into the UMMock
 }

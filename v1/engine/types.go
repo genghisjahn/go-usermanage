@@ -9,11 +9,11 @@ import (
 //Engine is the struct that holds all of the parts of the functions, properties, configuration and interface implemntations that interact with the data store.
 type Engine struct {
 	primitives.UserManager
-	config Config
+	epwconfig EmailPWConfig
 }
 
 //Config holds the regex for email, password and bcrypt cost.  It's expected to be loaded by a config file, sane defaults should be provided if the config file is missing.
-type Config struct {
+type EmailPWConfig struct {
 	EmailRegEx    string `json:"email_regex"`
 	PasswordRegEx string `json:"password_regex"`
 	BcryptCost    int    `json:"bcrypt_cost"`
@@ -24,6 +24,11 @@ func NewEngine(parts ...interface{}) (Engine, error) {
 	eng := Engine{}
 	for _, v := range parts {
 		var s = ""
+		c, ok := v.(EmailPWConfig)
+		if ok {
+			s = "Config"
+			eng.epwconfig = c
+		}
 		um, ok := v.(primitives.UserManager)
 		if ok {
 			s = "UserManager"
