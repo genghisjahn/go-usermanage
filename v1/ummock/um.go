@@ -28,14 +28,14 @@ func (u UMMock) CreateUser(email string, password []byte) (string, *primitives.S
 		return "", primitives.NewServiceError(5, err.Error())
 	}
 	if !matched {
-		return "", primitives.NewServiceError(4, "invalid email")
+		return "", primitives.NewServiceError(4, u.config.InvalidEmailMsg)
 	}
 	matched, err = regexp.Match(u.config.PasswordRegEx, password)
 	if err != nil {
 		return "", primitives.NewServiceError(5, err.Error())
 	}
 	if !matched {
-		return "", primitives.NewServiceError(4, "invalid password")
+		return "", primitives.NewServiceError(4, u.config.InvalidPasswordMsg)
 	}
 	pwhash, pwErr := hashPassword(password, u.config.BcryptCost)
 	if pwErr != nil {

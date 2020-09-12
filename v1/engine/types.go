@@ -14,9 +14,11 @@ type Engine struct {
 
 //EmailPWConfig holds the regex for email, password and bcrypt cost.  It's expected to be loaded by a config file, sane defaults should be provided if the config file is missing.
 type EmailPWConfig struct {
-	EmailRegEx    string `json:"email_regex"`
-	PasswordRegEx string `json:"password_regex"`
-	BcryptCost    int    `json:"bcrypt_cost"`
+	EmailRegEx         string `json:"email_regex"`
+	PasswordRegEx      string `json:"password_regex"`
+	BcryptCost         int    `json:"bcrypt_cost"`
+	InvalidEmailMsg    string `json:"invalid_email_message"`
+	InvalidPasswordMsg string `json:"invalid_password_message"`
 }
 
 //NewEngine takes a variadic param to get the interfaces to build the usermanager engine
