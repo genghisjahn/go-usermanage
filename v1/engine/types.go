@@ -12,7 +12,7 @@ type Engine struct {
 	epwconfig EmailPWConfig
 }
 
-//Config holds the regex for email, password and bcrypt cost.  It's expected to be loaded by a config file, sane defaults should be provided if the config file is missing.
+//EmailPWConfig holds the regex for email, password and bcrypt cost.  It's expected to be loaded by a config file, sane defaults should be provided if the config file is missing.
 type EmailPWConfig struct {
 	EmailRegEx    string `json:"email_regex"`
 	PasswordRegEx string `json:"password_regex"`
@@ -40,3 +40,9 @@ func NewEngine(parts ...interface{}) (Engine, error) {
 	}
 	return eng, nil
 }
+
+//TODO
+
+//I think we need the create,verify, login stuff here too
+//And we do the verification here
+//and then pass it on to the engine part that handles it

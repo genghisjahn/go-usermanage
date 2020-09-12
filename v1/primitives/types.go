@@ -10,11 +10,11 @@ type ServiceError struct {
 }
 
 //NewServiceError accepts a 4 or a 5 and a message to create a ServiceError
-func NewServiceError(errortype int, message string) ServiceError {
+func NewServiceError(errortype int, msg string) *ServiceError {
 	if errortype != 4 && errortype != 5 {
 		panic("Invalid Error Type " + string(errortype))
 	}
-	return ServiceError{Message: message, ErrorType: errortype}
+	return &ServiceError{Message: msg, ErrorType: errortype}
 }
 
 func (m ServiceError) Error() string {
@@ -26,5 +26,3 @@ func (m ServiceError) Error() string {
 	}
 	panic("Invalid Error Type " + string(m.ErrorType))
 }
-
-

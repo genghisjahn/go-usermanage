@@ -1,7 +1,8 @@
-package usermanage
+package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -22,11 +23,15 @@ func main() {
 		epwc = defaultConfig
 	}
 
-	um := ummock.UMMock{}
+	um := ummock.NewUserManager(epwc)
 	eng, engErr := engine.NewEngine(um)
 	if engErr != nil {
 		log.Fatal(engErr)
 	}
-	_ = eng
-	//TODO we need to inject the config for the validation URLs into the UMMock
+
+	guid, errU := eng.CreateUser("j@s.c", []byte("abcd1234"))
+	if errU != nil {
+		log.Fatal(errU)
+	}
+	fmt.Println(guid)
 }
