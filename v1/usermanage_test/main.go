@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -31,9 +30,8 @@ func main() {
 		log.Fatal(engErr)
 	}
 
-	guid, errU := eng.CreateUser("j@s.", []byte("abcd1234"))
+	errU := eng.CreateUser("j@s.c", []byte("abcd1234"))
 	if errU != nil {
 		log.Fatal(errU)
 	}
-	fmt.Println(guid)
 }

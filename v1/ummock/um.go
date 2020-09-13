@@ -1,13 +1,20 @@
 package ummock
 
 import (
-	"log"
 	"regexp"
 
 	"github.com/genghisjahn/go-usermanage/v1/engine"
 	"github.com/genghisjahn/go-usermanage/v1/primitives"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var mockusers map[string]mockuser
+
+func init() {
+	mockusers = make(map[string]mockuser)
+	mockusers["TEST_UUID"] = mockuser{"j@j.com", []byte("hashpassword")}
+}
 
 //UMMock struct that defines properties and functions for a mock/memory implemetation of the usermanager interface
 type UMMock struct {
@@ -22,27 +29,31 @@ func NewUserManager(c engine.EmailPWConfig) UMMock {
 }
 
 //CreateUser accepts email and password arguments and attemps to create a user record.  ServiceError is the custom error type returned
-func (u UMMock) CreateUser(email string, password []byte) (string, *primitives.ServiceError) {
+func (u UMMock) CreateUser(email string, password []byte) *primitives.ServiceError {
 	matched, err := regexp.Match(u.config.EmailRegEx, []byte(email))
 	if err != nil {
-		return "", primitives.NewServiceError(5, err.Error())
+		return primitives.NewServiceError(5, err.Error())
 	}
 	if !matched {
-		return "", primitives.NewServiceError(4, u.config.InvalidEmailMsg)
+		return primitives.NewServiceError(4, u.config.InvalidEmailMsg)
 	}
 	matched, err = regexp.Match(u.config.PasswordRegEx, password)
 	if err != nil {
-		return "", primitives.NewServiceError(5, err.Error())
+		return primitives.NewServiceError(5, err.Error())
 	}
 	if !matched {
-		return "", primitives.NewServiceError(4, u.config.InvalidPasswordMsg)
+		return primitives.NewServiceError(4, u.config.InvalidPasswordMsg)
 	}
 	pwhash, pwErr := hashPassword(password, u.config.BcryptCost)
 	if pwErr != nil {
-		return "", primitives.NewServiceError(5, pwErr.Error())
+		return primitives.NewServiceError(5, pwErr.Error())
 	}
-	log.Println(pwhash)
-	return "", nil
+	id := uuid.New().String()
+	if mockusers == nil {
+		mockusers = make(map[string]mockuser)
+	}
+	mockusers[id] = mockuser{Email: email, PWHash: pwhash}
+	return nil
 }
 
 //VerifyUser accepts a GUID and attempts to update the user record so that it is marked as verified.  ServiceError is the customer error type returned
@@ -57,7 +68,12 @@ func (u UMMock) LoginUser(email string, password []byte) *primitives.ServiceErro
 	return nil
 }
 
-func hashPassword(password []byte, c int) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword(password, c)
-	return string(bytes), err
+func hashPassword(password []byte, c int) ([]byte, error) {
+	return bcrypt.GenerateFromPassword(password, c)
+
+}
+
+type mockuser struct {
+	Email  string
+	PWHash []byte
 }
