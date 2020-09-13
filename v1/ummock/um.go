@@ -13,7 +13,7 @@ var mockusers map[string]mockuser
 
 func init() {
 	mockusers = make(map[string]mockuser)
-	mockusers["TEST_UUID"] = mockuser{"j@j.com", []byte("hashpassword")}
+	mockusers["TEST_UUID"] = mockuser{"j@j.com", []byte("hashpassword"), "verify"}
 }
 
 //UMMock struct that defines properties and functions for a mock/memory implemetation of the usermanager interface
@@ -29,31 +29,32 @@ func NewUserManager(c engine.EmailPWConfig) UMMock {
 }
 
 //CreateUser accepts email and password arguments and attemps to create a user record.  ServiceError is the custom error type returned
-func (u UMMock) CreateUser(email string, password []byte) *primitives.ServiceError {
+func (u UMMock) CreateUser(email string, password []byte) (string, *primitives.ServiceError) {
 	matched, err := regexp.Match(u.config.EmailRegEx, []byte(email))
 	if err != nil {
-		return primitives.NewServiceError(5, err.Error())
+		return "", primitives.NewServiceError(5, err.Error())
 	}
 	if !matched {
-		return primitives.NewServiceError(4, u.config.InvalidEmailMsg)
+		return "", primitives.NewServiceError(4, u.config.InvalidEmailMsg)
 	}
 	matched, err = regexp.Match(u.config.PasswordRegEx, password)
 	if err != nil {
-		return primitives.NewServiceError(5, err.Error())
+		return "", primitives.NewServiceError(5, err.Error())
 	}
 	if !matched {
-		return primitives.NewServiceError(4, u.config.InvalidPasswordMsg)
+		return "", primitives.NewServiceError(4, u.config.InvalidPasswordMsg)
 	}
 	pwhash, pwErr := hashPassword(password, u.config.BcryptCost)
 	if pwErr != nil {
-		return primitives.NewServiceError(5, pwErr.Error())
+		return "", primitives.NewServiceError(5, pwErr.Error())
 	}
 	id := uuid.New().String()
 	if mockusers == nil {
 		mockusers = make(map[string]mockuser)
 	}
-	mockusers[id] = mockuser{Email: email, PWHash: pwhash}
-	return nil
+	vguid := uuid.New().String()
+	mockusers[id] = mockuser{Email: email, PWHash: pwhash, VerifyGUID: vguid}
+	return vguid, nil
 }
 
 //VerifyUser accepts a GUID and attempts to update the user record so that it is marked as verified.  ServiceError is the customer error type returned
@@ -74,6 +75,7 @@ func hashPassword(password []byte, c int) ([]byte, error) {
 }
 
 type mockuser struct {
-	Email  string
-	PWHash []byte
+	Email      string
+	PWHash     []byte
+	VerifyGUID string
 }

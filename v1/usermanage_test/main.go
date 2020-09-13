@@ -30,8 +30,9 @@ func main() {
 		log.Fatal(engErr)
 	}
 
-	errU := eng.CreateUser("j@s.c", []byte("abcd1234"))
+	vGUID, errU := eng.CreateUser("j@s.c", []byte("abcd1234"))
 	if errU != nil {
 		log.Fatal(errU)
 	}
+	log.Println(vGUID)
 }
